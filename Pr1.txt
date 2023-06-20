@@ -103,4 +103,3 @@ void __fastcall TForm1::N10Click(TObject *Sender)
 {
 	Series1->Clear();
 }
-
