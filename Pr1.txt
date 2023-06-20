@@ -103,3 +103,29 @@ void __fastcall TForm1::N10Click(TObject *Sender)
 {
 	Series1->Clear();
 }
+
+
+=======================
+Завдання 2
+=======================
+#include <iostream>
+
+using namespace std;
+
+string countColor(int t){
+   int minute = t%6;
+   
+   if(minute<=2)return "Green";
+   else if(minute == 3)return "Yellow";
+   else return "Red";
+}
+
+int main(){
+    int t;
+    cout<<"Enter time: ";
+    cin>>t;
+    
+    cout<<countColor(t);
+
+    return 0;
+}
