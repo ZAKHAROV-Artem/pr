@@ -1,0 +1,112 @@
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit1.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm1 *Form1;
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+
+bool isDot = false;
+double num1 = 0,num2 = 0,res = 0;
+bool hasNum2 = false;
+bool hasNum1  = false;
+String operat = "";
+
+int getLength(){
+	return Form1->Edit1->Text.Length();
+}
+char getLast(){
+	return Form1->Edit1->Text[getLength()];
+}
+//---------------------------------------------------------------------------
+void addOperation(String operat){
+	Form1->Edit1->Text = operat;
+    isDot = false;
+}
+//---------------------------------------------------------------------------
+void removeLast(){
+	if (getLength() > 0)
+	   Form1->Edit1->Text = Form1->Edit1->Text.Delete(getLength(), 1);
+}
+double getResult(){
+	if(operat == "+")return num1 + num2;
+	else if(operat == "-")return num1 - num2;
+	else if(operat == "*")return num1 * num2;
+	else if(operat == "/"){
+		if(num2 == 0) throw Exception("Can not divide by 0 !");
+		return num1 / num2;
+	}
+	else throw Exception("Unsupported operation !");
+}
+
+void getNum(int i){
+	double res;
+	if(!isdigit(Form1->Edit1->Text[1]) && getLength() > 1)
+		res = Form1->Edit1->Text.SubString(2,getLength()).ToDouble();
+	else if(isdigit(Form1->Edit1->Text[1]))
+		res = Form1->Edit1->Text.ToDouble();
+	else return;
+
+	if(i == 1){
+		num1 = res;
+		hasNum1 = true;
+	}
+	else {
+		num2 = res;
+		hasNum2 = true;
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::NumberClick(TObject *Sender){
+	TButton *b = ((TButton*) Sender);
+	if(Edit1->Text == "0")	Edit1->Text = b->Caption;
+    else	Edit1->Text += b->Caption;
+
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::OperationClick(TObject *Sender){
+	TButton *b = ((TButton*) Sender);
+    if(Edit1->Text == "")return;
+	getNum(1);
+	operat = b->Caption;
+	addOperation(b->Caption);
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::addDot(TObject *Sender){
+	if(isDot)return;
+	Edit1->Text += '.';
+	isDot = true;
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::Clear(TObject *Sender){
+	Edit1->Text = "";
+	num1 = 0;
+	num2 = 0;
+	operat = "";
+    res = 0;
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::Delete(TObject *Sender){
+  removeLast();
+}
+
+void __fastcall TForm1::CountResult(TObject *Sender){
+    if(Edit1->Text == "")return;
+	if(!hasNum1)return;
+	getNum(2);
+	if(!hasNum2)return;
+    if(operat == "")return;
+	res = getResult();
+
+	Edit1->Text = res;
+	num1 = res;
+	hasNum2 = false;
+	operat = "";
+}
+//---------------------------------------------------------------------------

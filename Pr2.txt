@@ -1,0 +1,47 @@
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit1.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm1 *Form1;
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+
+bool fromRed = false;
+void __fastcall TForm1::Timer1Timer(TObject *Sender)
+{
+
+	if( red->Brush->Color == clRed ){
+		Timer1->Interval = 2000;
+		red->Brush->Color = clSilver;
+		yellow->Brush->Color = clYellow;
+		green->Brush->Color = clSilver;
+	}else if(green->Brush->Color == clGreen ){
+		Timer1->Interval = 2000;
+		red->Brush->Color = clSilver;
+		yellow->Brush->Color = clYellow;
+		green->Brush->Color = clSilver;
+	}else{
+		Timer1->Interval = 5000;
+		if(fromRed)green->Brush->Color = clGreen;
+		else red->Brush ->Color = clRed;
+		fromRed = !fromRed;
+		yellow->Brush->Color = clSilver;
+
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::Button1Click(TObject *Sender)
+{
+	Timer1->Interval = 5000;
+	red->Brush->Color = clSilver;
+	yellow->Brush->Color = clSilver;
+	green->Brush->Color = clGreen;
+    fromRed = false;
+}
+//---------------------------------------------------------------------------
